@@ -24,6 +24,7 @@ from datetime import date
 OUTPUT_PATH = 'Outputs'
 CSV_FILE = 'AACSV/results-survey346241.csv'
 WORD_PATH = 'Templates/PLANTILLA FINAL.docx'
+DIRECTORY = os.getcwd()
 
 '''
 El comentario de debajo se refiere a que en el test SDQ hay dos formas de actuar tomando los valores de 
@@ -466,6 +467,7 @@ def guardar_en_diccionario(diccionario, campo, valor):
 
 
 def crear_words(datos):
+    wylly = 0
     # Creamos el diccionario que contendra los valores que vamos a meter en el word
     diccionario = {}
     # Como hemos explicado ya, la primera lista de datos contiene los campos de los valores
@@ -665,17 +667,24 @@ def crear_words(datos):
         # Con este nuevo diccionario empezamos crear un nuevo docx
         docx_tpl.render(nuevo_diccionario)
 
-        if os.path.isfile('{}\\{} {}.docx'.format(OUTPUT_PATH, diccionario['Nombre'], diccionario['Apellidos'])):
+        os.chdir('{}/{}'.format(os.getcwd(), OUTPUT_PATH))
+        usuario = '{} {}'.format(diccionario['Nombre'], wylly)
+        os.mkdir(usuario)
+        os.chdir('{}/{}'.format(os.getcwd(), usuario))
+        wylly += 1
+
+        if os.path.isfile('{}\\{} {}.docx'.format(usuario, diccionario['Nombre'], diccionario['Apellidos'])):
             # Guardamos el word con el nombre de los usuarios
-            docx_tpl.save('{}\\{} {} V{}.docx'.format(OUTPUT_PATH, diccionario['Nombre'], diccionario['Apellidos'],
+            docx_tpl.save('{}\\{} {} V{}.docx'.format(usuario, diccionario['Nombre'], diccionario['Apellidos'],
                                                      numero_usuario))
             numero_usuario += 1
         else:
             # Guardamos el word con el nombre de los usuarios
-            docx_tpl.save('{}\\{} {}.docx'.format(OUTPUT_PATH, diccionario['Nombre'], diccionario['Apellidos']))
+            docx_tpl.save('{}\\{} {}.docx'.format(usuario, diccionario['Nombre'], diccionario['Apellidos']))
 
         # Vaciamos el diccionario para poder guardar los datos del nuevo usuario
         diccionario = {}
+        os.chdir(DIRECTORY)
 
 
 def main():
