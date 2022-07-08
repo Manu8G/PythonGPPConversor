@@ -679,7 +679,7 @@ def crear_words(datos):
             pip.save('{} {} V{}.docx'.format(diccionario['Nombre'], diccionario['Apellidos'],
                                                      numero_usuario))
             os.chdir('{}/{}'.format(DIRECTORY, OUTPUT_PATH))
-            os.rename(usuario, '*{} {}'.format(diccionario['Nombre'], diccionario['Apellidos']))
+            os.rename(usuario, '@{} {}'.format(diccionario['Nombre'], diccionario['Apellidos']))
             numero_usuario += 1
         else:
             # Guardamos el word con el nombre de los usuarios
