@@ -23,7 +23,8 @@ from datetime import date
 # Rutas
 OUTPUT_PATH = 'Outputs'
 CSV_FILE = 'AACSV/results-survey346241.csv'
-WORD_PATH = 'Templates/PLANTILLA FINAL.docx'
+PIP_PATH = 'Templates/PLANTILLA FINAL.docx'
+SESIONES_PATH = 'Templates/Plantilla de sesiones.docx'
 DIRECTORY = os.getcwd()
 
 '''
@@ -478,7 +479,8 @@ def crear_words(datos):
     numero_usuario = 0
     for i in datos:
         # Cada "i" es un nuevo usuario, por lo cual con cada iteracion del bucle recorremos un nuevo usuario
-        docx_tpl = DocxTemplate(WORD_PATH)
+        pip = DocxTemplate(PIP_PATH)
+        sesiones = DocxTemplate(SESIONES_PATH)
         j = 0
         while j < len(campos):  # Cada "j" es el número de un campo
             if campos[j].find("_[") != -1:
@@ -665,23 +667,28 @@ def crear_words(datos):
         # Traducimos los campos y los guadamos en un nuevo diciconario
         nuevo_diccionario = traducir(diccionario)
         # Con este nuevo diccionario empezamos crear un nuevo docx
-        docx_tpl.render(nuevo_diccionario)
+        pip.render(nuevo_diccionario)
+        sesiones.render(nuevo_diccionario)
 
         os.chdir('{}/{}'.format(os.getcwd(), OUTPUT_PATH))
-        usuario = '{} {}'.format(diccionario['Nombre'], wylly)
-        os.mkdir(usuario)
-        os.chdir('{}/{}'.format(os.getcwd(), usuario))
-        wylly += 1
+        usuario = '{} {}'.format(diccionario['Nombre'], diccionario['Apellidos'])
 
-        if os.path.isfile('{}\\{} {}.docx'.format(usuario, diccionario['Nombre'], diccionario['Apellidos'])):
+        if os.path.isdir(usuario):
             # Guardamos el word con el nombre de los usuarios
-            docx_tpl.save('{}\\{} {} V{}.docx'.format(usuario, diccionario['Nombre'], diccionario['Apellidos'],
+            os.chdir('{}/{}'.format(os.getcwd(), usuario))
+            pip.save('{} {} V{}.docx'.format(diccionario['Nombre'], diccionario['Apellidos'],
                                                      numero_usuario))
+            os.chdir('{}/{}'.format(DIRECTORY, OUTPUT_PATH))
+            os.rename(usuario, '*{} {}'.format(diccionario['Nombre'], diccionario['Apellidos']))
             numero_usuario += 1
         else:
             # Guardamos el word con el nombre de los usuarios
-            docx_tpl.save('{}\\{} {}.docx'.format(usuario, diccionario['Nombre'], diccionario['Apellidos']))
+            os.mkdir(usuario)
+            os.chdir('{}/{}'.format(os.getcwd(), usuario))
+            pip.save('{} {}.docx'.format(diccionario['Nombre'], diccionario['Apellidos']))
+            sesiones.save('Sesiones {}.docx'.format(diccionario['Nombre']))
 
+        wylly += 1
         # Vaciamos el diccionario para poder guardar los datos del nuevo usuario
         diccionario = {}
         os.chdir(DIRECTORY)
