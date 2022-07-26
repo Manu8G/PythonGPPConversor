@@ -463,12 +463,11 @@ def guardar_en_diccionario(diccionario, campo, valor):
     if type(valor) == type(int(var)):
         pass
     else:
-        valor = valor.replace("_", " ").replace("&lt;", "<").replace("00:00:00", "").replace("<", "menores")
+        valor = valor.replace("_", " ").replace("&lt;", ">").replace("00:00:00", "") # .replace(">", "menores")
     diccionario[campo] = valor
 
 
 def crear_words(datos):
-    wylly = 0
     # Creamos el diccionario que contendra los valores que vamos a meter en el word
     diccionario = {}
     # Como hemos explicado ya, la primera lista de datos contiene los campos de los valores
@@ -687,8 +686,6 @@ def crear_words(datos):
             os.chdir('{}/{}'.format(os.getcwd(), usuario))
             pip.save('{} {}.docx'.format(diccionario['Nombre'], diccionario['Apellidos']))
             sesiones.save('Sesiones {}.docx'.format(diccionario['Nombre']))
-
-        wylly += 1
         # Vaciamos el diccionario para poder guardar los datos del nuevo usuario
         diccionario = {}
         os.chdir(DIRECTORY)

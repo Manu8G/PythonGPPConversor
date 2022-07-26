@@ -27,11 +27,11 @@ def extraer_datos(csv_file):
             del datos[i][1:9]
 
             # Eliminamos los temporizadores del final, en la lista de los campos
-            del datos[i][355:361]
-            del datos[i][333:354]
-            del datos[i][285:332]
-            del datos[i][263:284]
-            del datos[i][260:262]
+            del datos[i][356:363]
+            del datos[i][334:355]
+            del datos[i][286:333]
+            del datos[i][264:285]
+            del datos[i][261:263]
 
             # Eliminamos la informacion de los creditos, en la lista de los valores y los campos
             del datos[i][57:76]
